@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="championList"></div>
+    <script>
+
+        // function getChampData() { 
+        //     fetch(`http://ddragon.leagueoflegends.com/cdn/11.6.1/data/ko_KR/champion.json`)
+        //         .then(function (response) {
+        //             // The API call was successful!
+        //             return response.json();
+        //         }).then(function (data) {
+        //             // This is the JSON from our response
+        //             console.log(data);
+        //         }).catch(function (err) {
+        //             // There was an error
+        //             console.warn('Something went wrong.', err);
+        //         });
+        // }
+        async function getChampData() {
+            try {
+                const res = await fetch(`http://ddragon.leagueoflegends.com/cdn/11.6.1/data/ko_KR/champion.json`)
+                    return await res.json();
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        async function renderChampion() {
+            let champions = await getChampData()
+            let championObject = champions.data
+            console.log(championObject)
+            let html = ''
+            for (const [key, value] of Object.entries(championObject)) {
+                let htmlSegment = `<div class="user">
+                            <h2>${key}</h2>
+                            <p>${value.name}</p>
+                            <img src="http://ddragon.leagueoflegends.com/cdn/11.6.1/img/champion/${value.id}.png" alt="${value.name}" />
+                        </div>`;
+                html += htmlSegment
+            }
+
+            let championList = document.querySelector('.championList')
+            championList.innerHTML = html
+        }
+        renderChampion();
+    </script>
+</body>
+</html>
